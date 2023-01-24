@@ -14,7 +14,7 @@ class HowToConnectButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.black,
+        backgroundColor: ColorManager.black,
       ),
       onPressed: () {
         Navigator.pushNamed(context, Routes.howToConnectScreenRoute);

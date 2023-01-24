@@ -52,7 +52,7 @@ class _ConnectScreenState extends State<ConnectScreen> {
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   height: AppSize.s450,
-                  color: ColorManager.black,
+                  color: ColorManager.grey,
                 )),
           ),
           const Positioned(
