@@ -12,28 +12,25 @@ class HowToConnectButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      height: AppSize.s450,
-      color: ColorManager.black,
-      child: OutlinedButton(
-        onPressed: () {
-          Navigator.pushNamed(context, Routes.howToConnectScreenRoute);
-        },
-        child: Center(
-          child: Container(
-            alignment: Alignment.bottomCenter,
-            margin: const EdgeInsets.symmetric(vertical: AppMargin.m35),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  AppStrings.howToConnect,
-                  style: getRegularStyle(color: ColorManager.white),
-                ),
-              ],
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.black,
+      ),
+      onPressed: () {
+        Navigator.pushNamed(context, Routes.howToConnectScreenRoute);
+      },
+      child: Container(
+        height: AppSize.s50,
+        width: AppSize.s200,
+        alignment: Alignment.center,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              AppStrings.howToConnect,
+              style: getRegularStyle(color: ColorManager.white),
             ),
-          ),
+          ],
         ),
       ),
     );

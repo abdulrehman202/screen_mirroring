@@ -12,7 +12,7 @@ class StartMirroringButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(AppMargin.m20),
+      margin: const EdgeInsets.all(AppMargin.m35),
       child: OutlinedButton(
         onPressed: () {},
         child: Padding(

@@ -22,6 +22,10 @@ class _ConnectScreenState extends State<ConnectScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        title: const Text('Screen Mirroring'),
+      ),
       body: Container(
         height: MediaQuery.of(context).size.height,
         decoration: const BoxDecoration(
@@ -43,7 +47,17 @@ class _ConnectScreenState extends State<ConnectScreen> {
           Positioned(
             bottom: 0,
             left: 0,
-            child: ClipPath(clipper: Wavy(), child: const HowToConnectButton()),
+            child: ClipPath(
+                clipper: Wavy(),
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: AppSize.s450,
+                  color: ColorManager.black,
+                )),
+          ),
+          const Positioned(
+            bottom: AppMargin.m20,
+            child: HowToConnectButton(),
           ),
         ]),
       ),

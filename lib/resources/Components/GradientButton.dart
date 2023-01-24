@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:screen_mirroring/resources/color_manager.dart';
 import 'package:screen_mirroring/resources/styles_manager.dart';
+import 'package:screen_mirroring/resources/values_manager.dart';
 
 class GradientButton extends StatelessWidget {
   final String buttonText;
@@ -19,7 +20,7 @@ class GradientButton extends StatelessWidget {
         ),
         width: MediaQuery.of(context).size.width,
         margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-        height: 40,
+        height: AppSize.s50,
         child: TextButton(
             onPressed: callback,
             child: Text(
