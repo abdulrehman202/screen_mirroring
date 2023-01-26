@@ -82,35 +82,35 @@ class _ConnectScreenState extends State<ConnectScreen> {
           Positioned(
             left: -50,
             child: ClipOval(
-              child: SizedBox(
+              child: Container(
                 height: MediaQuery.of(context).size.height * 0.4,
                 width: MediaQuery.of(context).size.width * 0.7,
-                child: Drawer(
-                  backgroundColor: ColorManager.black,
-                  child: SingleChildScrollView(
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          DrawerTile(
-                            btnText: 'Rate Us',
-                            callback: () {
-                              showRatingDialog();
-                            },
-                          ),
-                          DrawerTile(
-                            btnText: 'Privacy Policy',
-                            callback: () {},
-                          ),
-                          DrawerTile(
-                            btnText: 'More Apps',
-                            callback: () {},
-                          ),
-                          DrawerTile(
-                            btnText: 'Share App',
-                            callback: () {},
-                          ),
-                        ]),
-                  ),
+                decoration: const BoxDecoration(
+                  gradient: GradientManager.blueGradient,
+                ),
+                child: SingleChildScrollView(
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        DrawerTile(
+                          btnText: 'Rate Us',
+                          callback: () {
+                            showRatingDialog();
+                          },
+                        ),
+                        DrawerTile(
+                          btnText: 'Privacy Policy',
+                          callback: () {},
+                        ),
+                        DrawerTile(
+                          btnText: 'More Apps',
+                          callback: () {},
+                        ),
+                        DrawerTile(
+                          btnText: 'Share App',
+                          callback: () {},
+                        ),
+                      ]),
                 ),
               ),
             ),
@@ -119,10 +119,12 @@ class _ConnectScreenState extends State<ConnectScreen> {
             alignment: Alignment.centerRight,
             child: ClipOval(
               child: Container(
-                color: Colors.yellow,
+                decoration: BoxDecoration(
+                  color: ColorManager.black,
+                ),
                 child: IconButton(
                   icon: const Icon(Icons.arrow_back),
-                  color: Colors.black,
+                  color: ColorManager.white,
                   onPressed: () {
                     _scaffoldKey.currentState?.closeDrawer();
                   },

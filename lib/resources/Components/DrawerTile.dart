@@ -16,19 +16,20 @@ class DrawerTile extends StatelessWidget {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SizedBox(
+            const SizedBox(
               width: AppSize.s50,
             ),
             SizedBox(
               width: AppSize.s50,
               child: IconButton(
-                  icon: const Icon(Icons.arrow_downward, color: Colors.white),
+                  icon: const Icon(Icons.arrow_downward, color: Colors.black),
                   onPressed: () {}),
             ),
             Padding(
-                padding: EdgeInsets.all(AppPadding.p8),
+                padding: const EdgeInsets.all(AppPadding.p8),
                 child: Text(
                   btnText,
+                  style: getRegularStyle(color: const Color(0xff000000)),
                 )),
           ],
         ),
