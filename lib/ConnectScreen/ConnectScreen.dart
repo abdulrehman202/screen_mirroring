@@ -5,6 +5,7 @@ import 'package:screen_mirroring/resources/Clippers/Wavy.dart';
 import 'package:screen_mirroring/resources/Components/HowToConnectButton.dart';
 import 'package:screen_mirroring/resources/Components/RoundIconWithBlurBackground.dart';
 import 'package:screen_mirroring/resources/Components/StartMirroringButton.dart';
+import 'package:screen_mirroring/resources/Components/StopMirroringButton.dart';
 import 'package:screen_mirroring/resources/color_manager.dart';
 import 'package:screen_mirroring/resources/routes_manager.dart';
 import 'package:screen_mirroring/resources/strings_manager.dart';
@@ -28,20 +29,22 @@ class _ConnectScreenState extends State<ConnectScreen> {
       ),
       body: Container(
         height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
         decoration: const BoxDecoration(
           gradient: GradientManager.gradient,
         ),
         child: Stack(alignment: Alignment.center, children: [
           Column(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              const RoundIconWithBlurBackground(),
-              const StartMirroringButton(),
               Flexible(
                 child: SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.4,
+                  height: MediaQuery.of(context).size.height * 0.3,
                 ),
-              )
+              ),
+              const HowToConnectButton(),
+              const RoundIconWithBlurBackground(),
+              const StopMirroringButton(),
             ],
           ),
           Positioned(

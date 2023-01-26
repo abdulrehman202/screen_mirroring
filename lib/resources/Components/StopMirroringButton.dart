@@ -7,32 +7,32 @@ import 'package:screen_mirroring/resources/strings_manager.dart';
 import 'package:screen_mirroring/resources/styles_manager.dart';
 import 'package:screen_mirroring/resources/values_manager.dart';
 
-class StartMirroringButton extends StatelessWidget {
-  const StartMirroringButton({super.key});
+class StopMirroringButton extends StatelessWidget {
+  const StopMirroringButton({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: OutlinedButton(
-        onPressed: () async {
-          final value =
-              await Navigator.pushNamed(context, Routes.QRScannerScreenRoute);
-          //make sure the value is not null
-          print('value is ${value}');
-        },
+      margin: const EdgeInsets.all(AppMargin.m35),
+      width: MediaQuery.of(context).size.width * 0.6,
+      child: ElevatedButton(
+        onPressed: () async {},
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.red,
+        ),
         child: Padding(
           padding: const EdgeInsets.all(AppPadding.p20),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
+              Icon(
+                Icons.close_outlined,
+                color: ColorManager.white,
+              ),
               Text(
-                AppStrings.startMirroring,
+                AppStrings.stopMirroring,
                 style: getRegularStyle(color: ColorManager.white),
               ),
-              Icon(
-                Icons.arrow_forward,
-                color: ColorManager.white,
-              )
             ],
           ),
         ),
