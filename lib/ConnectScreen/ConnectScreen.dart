@@ -20,9 +20,12 @@ class ConnectScreen extends StatefulWidget {
 }
 
 class _ConnectScreenState extends State<ConnectScreen> {
+  GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
+      drawer: customDrawer(),
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: const Text('Screen Mirroring'),
@@ -61,6 +64,45 @@ class _ConnectScreenState extends State<ConnectScreen> {
           const Positioned(
             bottom: AppMargin.m20,
             child: HowToConnectButton(),
+          ),
+        ]),
+      ),
+    );
+  }
+
+  customDrawer() {
+    return Container(
+      color: Colors.transparent,
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height * 0.4,
+        width: MediaQuery.of(context).size.width * 0.7,
+        child: Stack(alignment: Alignment.center, children: [
+          Positioned(
+            left: -50,
+            child: ClipOval(
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height * 0.4,
+                width: MediaQuery.of(context).size.width * 0.7,
+                child: Drawer(
+                  backgroundColor: ColorManager.black,
+                ),
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.centerRight,
+            child: ClipOval(
+              child: Container(
+                color: Colors.yellow,
+                child: IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  color: Colors.black,
+                  onPressed: () {
+                    _scaffoldKey.currentState?.closeDrawer();
+                  },
+                ),
+              ),
+            ),
           ),
         ]),
       ),
