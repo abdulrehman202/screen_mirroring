@@ -2,18 +2,39 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:screen_mirroring/resources/assets_manager.dart';
 import 'package:screen_mirroring/resources/color_manager.dart';
 import 'package:screen_mirroring/resources/styles_manager.dart';
+import 'package:screen_mirroring/resources/values_manager.dart';
 
 import 'GradientButton.dart';
 
-class RateUsDialog extends StatelessWidget {
+class RateUsDialog extends StatefulWidget {
   const RateUsDialog({super.key});
+
+  @override
+  State<RateUsDialog> createState() => _RateUsDialogState();
+}
+
+class _RateUsDialogState extends State<RateUsDialog> {
+  static const List<String> imgPaths = [
+    ImagePath.crying,
+    ImagePath.sad,
+    ImagePath.happy,
+    ImagePath.heart,
+    ImagePath.heart_eyes,
+  ];
+
+  int imgIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return SimpleDialog(
-      title: FlutterLogo(),
+      title: SizedBox(
+          height: AppSize.s170,
+          child: Image.asset(
+            imgPaths[imgIndex],
+          )),
       backgroundColor: ColorManager.black,
       children: [
         Center(
@@ -37,7 +58,9 @@ class RateUsDialog extends StatelessWidget {
               color: Colors.amber,
             ),
             onRatingUpdate: (rating) {
-              print(rating);
+              setState(() {
+                imgIndex = (rating - 1).round();
+              });
             },
           ),
         ),
