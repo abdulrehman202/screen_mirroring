@@ -2,7 +2,9 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:screen_mirroring/resources/Clippers/Wavy.dart';
+import 'package:screen_mirroring/resources/Components/DrawerTile.dart';
 import 'package:screen_mirroring/resources/Components/HowToConnectButton.dart';
+import 'package:screen_mirroring/resources/Components/RateUsDialog.dart';
 import 'package:screen_mirroring/resources/Components/RoundIconWithBlurBackground.dart';
 import 'package:screen_mirroring/resources/Components/StartMirroringButton.dart';
 import 'package:screen_mirroring/resources/Components/StopMirroringButton.dart';
@@ -85,6 +87,30 @@ class _ConnectScreenState extends State<ConnectScreen> {
                 width: MediaQuery.of(context).size.width * 0.7,
                 child: Drawer(
                   backgroundColor: ColorManager.black,
+                  child: SingleChildScrollView(
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          DrawerTile(
+                            btnText: 'Rate Us',
+                            callback: () {
+                              showRatingDialog();
+                            },
+                          ),
+                          DrawerTile(
+                            btnText: 'Privacy Policy',
+                            callback: () {},
+                          ),
+                          DrawerTile(
+                            btnText: 'More Apps',
+                            callback: () {},
+                          ),
+                          DrawerTile(
+                            btnText: 'Share App',
+                            callback: () {},
+                          ),
+                        ]),
+                  ),
                 ),
               ),
             ),
@@ -107,5 +133,9 @@ class _ConnectScreenState extends State<ConnectScreen> {
         ]),
       ),
     );
+  }
+
+  showRatingDialog() {
+    showDialog(context: context, builder: (builder) => const RateUsDialog());
   }
 }
