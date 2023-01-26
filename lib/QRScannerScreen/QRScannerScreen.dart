@@ -26,12 +26,17 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
     super.reassemble();
     if (Platform.isAndroid) {
       controller!.pauseCamera();
+      controller!.resumeCamera();
     }
     controller!.resumeCamera();
   }
 
   @override
   Widget build(BuildContext context) {
+    if (controller != null && mounted) {
+      controller!.pauseCamera();
+      controller!.resumeCamera();
+    }
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -91,6 +96,9 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
     });
     controller.scannedDataStream.listen((scanData) {
       //once the data is scanned close the screen and return the data
+
+      controller.pauseCamera();
+      controller.resumeCamera();
       Navigator.of(context).maybePop(scanData.code);
     });
   }

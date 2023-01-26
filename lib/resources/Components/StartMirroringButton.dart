@@ -18,6 +18,7 @@ class StartMirroringButton extends StatelessWidget {
         onPressed: () async {
           final value =
               await Navigator.pushNamed(context, Routes.QRScannerScreenRoute);
+          //make sure the value is not null
           print('value is ${value}');
         },
         child: Padding(
