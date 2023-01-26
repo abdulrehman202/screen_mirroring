@@ -36,11 +36,6 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
       body: Stack(
         children: <Widget>[
           _buildQrView(context),
-          // if (result != null)
-          //   Text(
-          //       'Barcode Type: ${describeEnum(result!.format)}   Data: ${result!.code}')
-          // else
-          //   const Text('Scan a code'),
           Align(
             alignment: Alignment.bottomCenter,
             child: SizedBox(
@@ -95,9 +90,8 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
       this.controller = controller;
     });
     controller.scannedDataStream.listen((scanData) {
-      setState(() {
-        result = scanData;
-      });
+      //once the data is scanned close the screen and return the data
+      Navigator.of(context).maybePop(scanData.code);
     });
   }
 

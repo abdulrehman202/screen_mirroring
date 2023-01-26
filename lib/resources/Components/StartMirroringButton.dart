@@ -15,8 +15,10 @@ class StartMirroringButton extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.all(AppMargin.m35),
       child: OutlinedButton(
-        onPressed: () {
-          Navigator.pushNamed(context, Routes.QRScannerScreenRoute);
+        onPressed: () async {
+          final value =
+              await Navigator.pushNamed(context, Routes.QRScannerScreenRoute);
+          print('value is ${value}');
         },
         child: Padding(
           padding: const EdgeInsets.all(AppPadding.p20),
