@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:screen_mirroring/resources/assets_manager.dart';
 import 'package:screen_mirroring/resources/color_manager.dart';
 import 'package:screen_mirroring/resources/styles_manager.dart';
@@ -31,10 +32,11 @@ class _RateUsDialogState extends State<RateUsDialog> {
   Widget build(BuildContext context) {
     return SimpleDialog(
       title: SizedBox(
-          height: AppSize.s170,
-          child: Image.asset(
-            imgPaths[imgIndex],
-          )),
+        height: AppSize.s170,
+        child: SvgPicture.asset(
+          imgPaths[imgIndex],
+        ),
+      ),
       backgroundColor: ColorManager.black,
       children: [
         Center(
@@ -47,10 +49,10 @@ class _RateUsDialogState extends State<RateUsDialog> {
         )),
         Center(
           child: RatingBar.builder(
+            updateOnDrag: true,
             initialRating: 1,
             minRating: 1,
             direction: Axis.horizontal,
-            allowHalfRating: true,
             itemCount: 5,
             itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
             itemBuilder: (context, _) => const Icon(
