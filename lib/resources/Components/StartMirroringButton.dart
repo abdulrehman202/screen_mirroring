@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -12,7 +14,8 @@ class StartMirroringButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * 0.5,
       child: OutlinedButton(
         onPressed: () async {
           final value =
@@ -23,7 +26,7 @@ class StartMirroringButton extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(AppPadding.p20),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Text(
                 AppStrings.startMirroring,

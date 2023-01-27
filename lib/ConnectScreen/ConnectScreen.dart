@@ -50,7 +50,7 @@ class _ConnectScreenState extends State<ConnectScreen> {
               ),
               const HowToConnectButton(),
               const RoundIconWithBlurBackground(),
-              const StopMirroringButton(),
+              const StartMirroringButton(),
             ],
           ),
           Positioned(
@@ -64,9 +64,9 @@ class _ConnectScreenState extends State<ConnectScreen> {
                   color: ColorManager.grey,
                 )),
           ),
-          const Positioned(
+          Positioned(
             bottom: AppMargin.m20,
-            child: HowToConnectButton(),
+            child: Container(),
           ),
         ]),
       ),
