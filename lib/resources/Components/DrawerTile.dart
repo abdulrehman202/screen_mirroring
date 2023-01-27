@@ -8,7 +8,12 @@ import 'package:screen_mirroring/resources/values_manager.dart';
 class DrawerTile extends StatelessWidget {
   String btnText;
   VoidCallback callback;
-  DrawerTile({super.key, required this.btnText, required this.callback});
+  IconData icon;
+  DrawerTile(
+      {super.key,
+      required this.icon,
+      required this.btnText,
+      required this.callback});
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +27,7 @@ class DrawerTile extends StatelessWidget {
             SizedBox(
               width: AppSize.s50,
               child: IconButton(
-                  icon: const Icon(Icons.arrow_downward, color: Colors.black),
-                  onPressed: () {}),
+                  icon: Icon(icon, color: Colors.black), onPressed: () {}),
             ),
             Padding(
                 padding: const EdgeInsets.all(AppPadding.p8),

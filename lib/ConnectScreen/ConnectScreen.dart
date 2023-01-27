@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:screen_mirroring/resources/Clippers/Wavy.dart';
 import 'package:screen_mirroring/resources/Components/DrawerTile.dart';
+import 'package:screen_mirroring/resources/Components/GradientButton.dart';
 import 'package:screen_mirroring/resources/Components/HowToConnectButton.dart';
 import 'package:screen_mirroring/resources/Components/RateUsDialog.dart';
 import 'package:screen_mirroring/resources/Components/RoundIconWithBlurBackground.dart';
@@ -86,31 +87,37 @@ class _ConnectScreenState extends State<ConnectScreen> {
                 height: MediaQuery.of(context).size.height * 0.4,
                 width: MediaQuery.of(context).size.width * 0.7,
                 decoration: const BoxDecoration(
-                  gradient: GradientManager.blueGradient,
+                  gradient: GradientManager.greenGradient,
                 ),
                 child: SingleChildScrollView(
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        DrawerTile(
-                          btnText: 'Rate Us',
-                          callback: () {
-                            showRatingDialog();
-                          },
-                        ),
-                        DrawerTile(
-                          btnText: 'Privacy Policy',
-                          callback: () {},
-                        ),
-                        DrawerTile(
-                          btnText: 'More Apps',
-                          callback: () {},
-                        ),
-                        DrawerTile(
-                          btnText: 'Share App',
-                          callback: () {},
-                        ),
-                      ]),
+                  child: Column(children: [
+                    DrawerTile(
+                      icon: Icons.star,
+                      btnText: 'Rate Us',
+                      callback: () {
+                        showRatingDialog();
+                      },
+                    ),
+                    DrawerTile(
+                      icon: Icons.abc,
+                      btnText: 'Privacy Policy',
+                      callback: () {},
+                    ),
+                    DrawerTile(
+                      icon: Icons.list,
+                      btnText: 'More Apps',
+                      callback: () {},
+                    ),
+                    DrawerTile(
+                      icon: Icons.share,
+                      btnText: 'Share App',
+                      callback: () {},
+                    ),
+                    SizedBox(
+                        width: AppSize.s200,
+                        child:
+                            GradientButton(buttonText: 'VIP', callback: () {}))
+                  ]),
                 ),
               ),
             ),

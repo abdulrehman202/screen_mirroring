@@ -63,6 +63,16 @@ class GradientManager {
       end: Alignment.bottomCenter,
       stops: [0.0, 1.0],
       tileMode: TileMode.clamp);
+
+  static const LinearGradient greenGradient = LinearGradient(
+      colors: [
+        Color(0xff81d1b3),
+        Color(0xffffffff),
+      ],
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      stops: [0.4, 1.0],
+      tileMode: TileMode.clamp);
 }
 
 extension HexColor on Color {
