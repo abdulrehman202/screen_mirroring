@@ -53,33 +53,31 @@ class _HowToConnectScreenState extends State<HowToConnectScreen> {
                   controller: DefaultTabController.of(context),
                   children: containersList,
                 ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ClipPath(
+                ClipPath(
+                  clipper: ArcClipper(),
+                  child: Container(
+                    color: const Color(0xff25262c),
+                    height: MediaQuery.of(context).size.height * 0.3,
+                  ),
+                ),
+                Positioned(
+                  bottom: 0,
+                  child: RotatedBox(
+                    quarterTurns: 2,
+                    child: ClipPath(
+                      clipBehavior: Clip.hardEdge,
                       clipper: ArcClipper(),
                       child: Container(
                         color: const Color(0xff25262c),
-                        height: MediaQuery.of(context).size.height * 0.3,
-                      ),
-                    ),
-                    RotatedBox(
-                      quarterTurns: 2,
-                      child: ClipPath(
-                        clipBehavior: Clip.hardEdge,
-                        clipper: ArcClipper(),
-                        child: Container(
-                          color: const Color(0xff25262c),
-                          height: MediaQuery.of(context).size.height * 0.4,
-                          width: MediaQuery.of(context).size.width,
-                          child: const RotatedBox(
-                            quarterTurns: 2,
-                            child: Center(child: TabPageSelector()),
-                          ),
+                        height: MediaQuery.of(context).size.height * 0.4,
+                        width: MediaQuery.of(context).size.width,
+                        child: const RotatedBox(
+                          quarterTurns: 2,
+                          child: Center(child: TabPageSelector()),
                         ),
                       ),
-                    )
-                  ],
+                    ),
+                  ),
                 ),
                 Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
