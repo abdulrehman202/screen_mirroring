@@ -39,6 +39,12 @@ dependencies:
   qr_code_scanner: ^1.0.1
   flutter_rating_bar: ^4.0.1
   flutter_svg: ^1.1.6
+  flutter_webrtc: ^0.9.19
+  flutter_background: ^1.2.0
+  permission_handler: ^10.2.0
+  agora_rtc_engine: ^6.1.0
+  agora_rtm: ^1.5.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

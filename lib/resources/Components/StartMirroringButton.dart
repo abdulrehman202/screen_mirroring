@@ -10,19 +10,15 @@ import 'package:screen_mirroring/resources/styles_manager.dart';
 import 'package:screen_mirroring/resources/values_manager.dart';
 
 class StartMirroringButton extends StatelessWidget {
-  const StartMirroringButton({super.key});
+  VoidCallback callback;
+  StartMirroringButton({super.key, required this.callback});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.5,
       child: OutlinedButton(
-        onPressed: () async {
-          final value =
-              await Navigator.pushNamed(context, Routes.QRScannerScreenRoute);
-          //make sure the value is not null
-          print('value is ${value}');
-        },
+        onPressed: callback,
         child: Padding(
           padding: const EdgeInsets.all(AppPadding.p20),
           child: Row(

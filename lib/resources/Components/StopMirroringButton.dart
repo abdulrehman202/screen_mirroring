@@ -8,7 +8,8 @@ import 'package:screen_mirroring/resources/styles_manager.dart';
 import 'package:screen_mirroring/resources/values_manager.dart';
 
 class StopMirroringButton extends StatelessWidget {
-  const StopMirroringButton({super.key});
+  VoidCallback callback;
+  StopMirroringButton({super.key, required this.callback});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class StopMirroringButton extends StatelessWidget {
       margin: const EdgeInsets.all(AppMargin.m35),
       width: MediaQuery.of(context).size.width * 0.6,
       child: ElevatedButton(
-        onPressed: () async {},
+        onPressed: callback,
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.red,
         ),

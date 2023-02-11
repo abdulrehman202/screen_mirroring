@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:screen_mirroring/resources/assets_manager.dart';
 import 'package:screen_mirroring/resources/color_manager.dart';
