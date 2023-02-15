@@ -97,8 +97,9 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
     controller.scannedDataStream.listen((scanData) {
       //once the data is scanned close the screen and return the data
 
-      controller.pauseCamera();
-      controller.resumeCamera();
+      // controller.pauseCamera();
+      // controller.resumeCamera();
+      controller.stopCamera();
       Navigator.of(context).maybePop(scanData.code);
     });
   }
@@ -115,6 +116,7 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
   @override
   void dispose() {
     controller?.dispose();
+    // controller?.stopCamera();
     super.dispose();
   }
 }

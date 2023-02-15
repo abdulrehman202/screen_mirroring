@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:screen_mirroring/resources/Clippers/Wavy.dart';
 import 'package:screen_mirroring/resources/Components/DrawerTile.dart';
 import 'package:screen_mirroring/resources/Components/GradientButton.dart';
@@ -16,6 +18,7 @@ import 'package:screen_mirroring/resources/strings_manager.dart';
 import 'package:screen_mirroring/resources/styles_manager.dart';
 import 'package:screen_mirroring/resources/values_manager.dart';
 import 'package:screen_mirroring/server/Sever.dart';
+import 'package:http/http.dart' as http;
 
 class ConnectScreen extends StatefulWidget {
   const ConnectScreen({super.key});
@@ -177,46 +180,73 @@ class _ConnectScreenState extends State<ConnectScreen> {
   }
 
   scanCode() async {
-    final code =
-        await Navigator.pushNamed(context, Routes.QRScannerScreenRoute);
+    try {
+      final code =
+          await Navigator.pushNamed(context, Routes.QRScannerScreenRoute);
 
-    if (code != null) {
-      print('code is ${code}');
-      setState(() {
-        mirrored = true;
-      });
+      if (code != null) {
+        print('code is ${code}');
+        setState(() {
+          mirrored = true;
+        });
 
-      startMirroring(code);
+        List<String> temp = code.toString().split('-');
+        channelName = temp[0];
+
+        token =
+            '006eb89e77a6cae45a39d1c547598be879eIAA/8SJ26EcfymA1npHqk1gI9jsP90Ouyt35n+5V+Bzf5wbR+XIh39v0IgDQZLm/P6jtYwQAAQDPZOxjAgDPZOxjAwDPZOxjBADPZOxj';
+
+        if (token != '') {
+          startMirroring();
+        } else {
+          showToast('Could not generate token');
+        }
+      }
+      // try {
+      // channelName = 'rtc8108';
+      // uid = 0;
+      // token = await generateToken();
+    } catch (e) {
+      showToast(e.toString());
     }
   }
 
-  startMirroring(code) async {
-    await initializeValues();
-    await agoraEngine.setClientRole(role: ClientRoleType.clientRoleBroadcaster);
+  showToast(String text) {
+    Fluttertoast.showToast(
+      msg: text,
+      toastLength: Toast.LENGTH_SHORT,
+    );
+  }
 
-    await agoraEngine.enableLocalVideo(true);
-    await agoraEngine.muteLocalVideoStream(false);
-    await agoraEngine.muteLocalAudioStream(true);
+  startMirroring() async {
+    try {
+      await initializeValues();
+      await agoraEngine.setClientRole(
+          role: ClientRoleType.clientRoleBroadcaster);
 
-    // Update channel media options to publish camera or screen capture streams
+      await agoraEngine.enableLocalVideo(true);
+      await agoraEngine.muteLocalVideoStream(false);
+      await agoraEngine.muteLocalAudioStream(true);
 
-    await agoraEngine.startScreenCapture(const ScreenCaptureParameters2(
-        captureAudio: true,
-        audioParams: ScreenAudioParameters(
-            sampleRate: 16000, channels: 2, captureSignalVolume: 100),
-        captureVideo: true,
-        videoParams: ScreenVideoParameters(frameRate: 15, bitrate: 600)));
+      // Update channel media options to publish camera or screen capture streams
 
-    await agoraEngine.startPreview();
-    await joinChannel(code).then((isJoined) async {
-      if (isJoined) {
-        // await agoraEngine.startPrimaryScreenCapture(
-        //     const ScreenCaptureConfiguration(
-        //         params: ScreenCaptureParameters(frameRate: 15, bitrate: 600)));
-      } else {
-        //snackbar show couldn't join channel
-      }
-    });
+      await agoraEngine.startScreenCapture(const ScreenCaptureParameters2(
+          captureAudio: true,
+          audioParams: ScreenAudioParameters(
+              sampleRate: 16000, channels: 2, captureSignalVolume: 100),
+          captureVideo: true,
+          videoParams: ScreenVideoParameters(frameRate: 15, bitrate: 600)));
+
+      await agoraEngine.startPreview();
+      await joinChannel().then((isJoined) async {
+        if (isJoined) {
+        } else {
+          //snackbar show couldn't join channel
+        }
+      });
+    } catch (e) {
+      rethrow;
+    }
   }
 
   stopMirroring() async {
@@ -234,27 +264,19 @@ class _ConnectScreenState extends State<ConnectScreen> {
     super.dispose();
   }
 
-  Future<bool> joinChannel(var code) async {
-    List<String> temp = code.split('-');
-    channelName = temp[0];
-    token = temp[1];
-
-    print('channel name is ${channelName}');
-    print('token is ${token}');
-
-    ChannelMediaOptions options = ChannelMediaOptions(
-      publishCameraTrack: false,
-      publishMicrophoneTrack: mirrored,
-      publishScreenTrack: mirrored,
-      publishScreenCaptureAudio: mirrored,
-      publishScreenCaptureVideo: mirrored,
-      clientRoleType: ClientRoleType.clientRoleBroadcaster,
-      channelProfile: ChannelProfileType.channelProfileCommunication,
-    );
-
+  Future<bool> joinChannel() async {
     bool result = true;
-
     try {
+      ChannelMediaOptions options = ChannelMediaOptions(
+        publishCameraTrack: false,
+        publishMicrophoneTrack: mirrored,
+        publishScreenTrack: mirrored,
+        publishScreenCaptureAudio: mirrored,
+        publishScreenCaptureVideo: mirrored,
+        clientRoleType: ClientRoleType.clientRoleBroadcaster,
+        channelProfile: ChannelProfileType.channelProfileCommunication,
+      );
+
       await agoraEngine.joinChannel(
         token: token,
         channelId: channelName,
@@ -268,8 +290,30 @@ class _ConnectScreenState extends State<ConnectScreen> {
   }
 
   initializeValues() async {
-    agoraEngine = createAgoraRtcEngine();
-    await agoraEngine.initialize(
-        const RtcEngineContext(appId: 'eb89e77a6cae45a39d1c547598be879e'));
+    try {
+      agoraEngine = createAgoraRtcEngine();
+      await agoraEngine.initialize(
+          const RtcEngineContext(appId: 'eb89e77a6cae45a39d1c547598be879e'));
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  generateToken() async {
+    try {
+      String ip = '192.168.1.3:3001';
+      String url = 'http://$ip/rtc/$channelName/publisher/userAccount/$uid';
+
+      final response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+
+        showToast(data['rtcToken']);
+        return data['rtcToken'].toString();
+      }
+    } catch (e) {
+      rethrow;
+    }
   }
 }
