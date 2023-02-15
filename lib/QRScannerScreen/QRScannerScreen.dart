@@ -15,7 +15,7 @@ class QRScannerScreen extends StatefulWidget {
 }
 
 class _QRScannerScreenState extends State<QRScannerScreen> {
-  Barcode? result;
+  String? result;
   QRViewController? controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
@@ -26,7 +26,6 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
     super.reassemble();
     if (Platform.isAndroid) {
       controller!.pauseCamera();
-      controller!.resumeCamera();
     }
     controller!.resumeCamera();
   }
@@ -97,10 +96,13 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
     controller.scannedDataStream.listen((scanData) {
       //once the data is scanned close the screen and return the data
 
-      // controller.pauseCamera();
-      // controller.resumeCamera();
-      controller.stopCamera();
-      Navigator.of(context).maybePop(scanData.code);
+      controller.pauseCamera();
+      controller.resumeCamera();
+      setState(() {
+        result = scanData.code;
+      });
+      // controller.stopCamera();
+      Navigator.of(context).maybePop(result);
     });
   }
 

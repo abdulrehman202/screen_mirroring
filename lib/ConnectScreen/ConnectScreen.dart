@@ -180,33 +180,39 @@ class _ConnectScreenState extends State<ConnectScreen> {
   }
 
   scanCode() async {
+    //This function performs all the necessary tasks prior to screen mirroring
     try {
+      //The QR code scanner opens and the result is stored in dynamic variable code
       final code =
           await Navigator.pushNamed(context, Routes.QRScannerScreenRoute);
 
+      //If the code is not null then proceed next
+      //The code can be null if user returns from screen without scanning the QR
       if (code != null) {
         print('code is ${code}');
         setState(() {
+          //set the mirrored variable to true to hide start button and show stop button
           mirrored = true;
         });
 
+        //Store the QR value in channelName variable, the channel where receiver is present
         List<String> temp = code.toString().split('-');
         channelName = temp[0];
 
-        token =
-            '006eb89e77a6cae45a39d1c547598be879eIAA/8SJ26EcfymA1npHqk1gI9jsP90Ouyt35n+5V+Bzf5wbR+XIh39v0IgDQZLm/P6jtYwQAAQDPZOxjAgDPZOxjAwDPZOxjBADPZOxj';
+        token = '';
 
+        //Generate token function is called to generate access token
+        token = await generateToken();
+
+        //if token is not empty then start screen mirroring
         if (token != '') {
           startMirroring();
         } else {
           showToast('Could not generate token');
         }
       }
-      // try {
-      // channelName = 'rtc8108';
-      // uid = 0;
-      // token = await generateToken();
     } catch (e) {
+      //In case any error occurs display it in Toast
       showToast(e.toString());
     }
   }
@@ -220,17 +226,21 @@ class _ConnectScreenState extends State<ConnectScreen> {
 
   startMirroring() async {
     try {
+      //Inititalize agora engine
       await initializeValues();
+
+      //Set the client role to broadcaster as this app sahres the screen
       await agoraEngine.setClientRole(
           role: ClientRoleType.clientRoleBroadcaster);
 
+      //Enable all streams
       await agoraEngine.enableLocalVideo(true);
       await agoraEngine.muteLocalVideoStream(false);
       await agoraEngine.muteLocalAudioStream(true);
 
-      // Update channel media options to publish camera or screen capture streams
-
+      //Start screen capture
       await agoraEngine.startScreenCapture(const ScreenCaptureParameters2(
+          //Send audio with display
           captureAudio: true,
           audioParams: ScreenAudioParameters(
               sampleRate: 16000, channels: 2, captureSignalVolume: 100),
@@ -238,10 +248,13 @@ class _ConnectScreenState extends State<ConnectScreen> {
           videoParams: ScreenVideoParameters(frameRate: 15, bitrate: 600)));
 
       await agoraEngine.startPreview();
+
       await joinChannel().then((isJoined) async {
         if (isJoined) {
+          showToast('Screen Mirroring successful!');
         } else {
           //snackbar show couldn't join channel
+          showToast('Screen Mirroring failed!');
         }
       });
     } catch (e) {
@@ -301,7 +314,7 @@ class _ConnectScreenState extends State<ConnectScreen> {
 
   generateToken() async {
     try {
-      String ip = '192.168.1.3:3001';
+      String ip = '192.168.18.117:3001';
       String url = 'http://$ip/rtc/$channelName/publisher/userAccount/$uid';
 
       final response = await http.get(Uri.parse(url));
@@ -309,8 +322,9 @@ class _ConnectScreenState extends State<ConnectScreen> {
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
 
-        showToast(data['rtcToken']);
-        return data['rtcToken'].toString();
+        return data['rtcToken'];
+      } else {
+        return '';
       }
     } catch (e) {
       rethrow;

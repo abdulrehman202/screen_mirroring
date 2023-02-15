@@ -4,6 +4,7 @@ import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:screen_mirroring/resources/theme_manager.dart';
 import 'package:screen_mirroring/splash/splash.dart';
 import 'package:flutter_background/flutter_background.dart';
+import 'package:adapty_flutter/adapty_flutter.dart';
 
 import 'resources/routes_manager.dart';
 
@@ -14,6 +15,7 @@ void main() {
     WidgetsFlutterBinding.ensureInitialized();
     startForegroundService();
   }
+  // Adapty.activate();
   runApp(MyApp());
 }
 

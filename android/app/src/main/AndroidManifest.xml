@@ -51,5 +51,9 @@ android:exported="false"/>
             <meta-data
             android:name="com.google.android.gms.ads.ca-app-pub-6377314831622135~1864297730"
             android:value="screen_mirroring_1234" />
+
+                   <meta-data
+              android:name="AdaptyPublicSdkKey"
+              android:value="public_live_PVtzDwNr.WWhsbFTnJUkD902JU5LX" />
     </application>
 </manifest>
