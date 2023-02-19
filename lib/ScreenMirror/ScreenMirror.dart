@@ -4,12 +4,14 @@ import 'dart:convert';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:screen_mirroring/resources/strings_manager.dart';
 
 class ScreenMirror {
   // Agora engine instance
   late String channelName;
   late String token;
   final uid = 0; // uid of the local user
+  final ip = '${AppStrings.ip}:3001';
 
   late RtcEngine agoraEngine;
 
@@ -27,7 +29,7 @@ class ScreenMirror {
         //Inititalize agora engine
         await initializeValues();
 
-        //Set the client role to broadcaster as this app sahres the screen
+        //Set the client role to broadcaster to share screen
         await agoraEngine.setClientRole(
             role: ClientRoleType.clientRoleBroadcaster);
 
@@ -44,8 +46,6 @@ class ScreenMirror {
                 sampleRate: 16000, channels: 2, captureSignalVolume: 100),
             captureVideo: true,
             videoParams: ScreenVideoParameters(frameRate: 15, bitrate: 600)));
-
-        await agoraEngine.startPreview();
 
         await joinChannel().then((isJoined) async {
           if (isJoined) {
@@ -104,8 +104,8 @@ class ScreenMirror {
   initializeValues() async {
     try {
       agoraEngine = createAgoraRtcEngine();
-      await agoraEngine.initialize(
-          const RtcEngineContext(appId: 'eb89e77a6cae45a39d1c547598be879e'));
+      await agoraEngine
+          .initialize(const RtcEngineContext(appId: AppStrings.agoraAppID));
     } catch (e) {
       rethrow;
     }
@@ -113,7 +113,6 @@ class ScreenMirror {
 
   generateToken() async {
     try {
-      String ip = '192.168.18.117:3001';
       String url = 'http://$ip/rtc/$channelName/publisher/userAccount/$uid';
 
       final response = await http.get(Uri.parse(url));

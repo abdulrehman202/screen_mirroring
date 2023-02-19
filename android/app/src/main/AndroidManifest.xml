@@ -47,13 +47,13 @@ android:exported="false"/>
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-
+            
             <meta-data
-            android:name="com.google.android.gms.ads.ca-app-pub-6377314831622135~1864297730"
-            android:value="screen_mirroring_1234" />
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-9028855786823251~2009826874"/>
 
                    <meta-data
               android:name="AdaptyPublicSdkKey"
-              android:value="public_live_PVtzDwNr.WWhsbFTnJUkD902JU5LX" />
+              android:value="public_live_KeEkT2ia.fmH0iKkIGr7EcaXckXyi" />
     </application>
 </manifest>

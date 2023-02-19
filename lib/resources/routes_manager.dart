@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:screen_mirroring/ConnectScreen/ConnectScreen.dart';
 import 'package:screen_mirroring/HowToConnectScreen/HowToConnectScreen.dart';
 import 'package:screen_mirroring/QRScannerScreen/QRScannerScreen.dart';
+import 'package:screen_mirroring/Subscription/Screen/PaywallScreen.dart';
 import 'package:screen_mirroring/resources/strings_manager.dart';
 
 import '../splash/splash.dart';
@@ -12,6 +13,7 @@ class Routes {
   static const String connectScreenRoute = '/ConnectScreen';
   static const String howToConnectScreenRoute = '/HowToConnectScreen';
   static const String QRScannerScreenRoute = '/QRScannerScreen';
+  static const String paywallScreenRoute = '/PaywallScreen';
 }
 
 class RouteGenerator {
@@ -28,6 +30,9 @@ class RouteGenerator {
 
       case Routes.QRScannerScreenRoute:
         return MaterialPageRoute(builder: (_) => const QRScannerScreen());
+
+      case Routes.paywallScreenRoute:
+        return MaterialPageRoute(builder: (_) => const PaywallScreen());
 
       default:
         return UnDefinedRoute();

@@ -1,6 +1,7 @@
-import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:screen_mirroring/AdMob/AdMob.dart';
 import 'package:screen_mirroring/ScreenMirror/ScreenMirror.dart';
 import 'package:screen_mirroring/resources/Clippers/Wavy.dart';
 import 'package:screen_mirroring/resources/Components/DrawerTile.dart';
@@ -22,22 +23,16 @@ class ConnectScreen extends StatefulWidget {
 }
 
 class _ConnectScreenState extends State<ConnectScreen> {
-  GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool mirrored = false;
-  String channelName = "rtc8108";
-  String token =
-      '007eJxTYGjJXONicszJS3f+wnU6m+cVHxCZZDa106kiKYV9V8FUhkUKDKlJFpap5uaJZsmJqSamicaWKYbJpibmppYWSakW5pap/7OfJTcEMjKkhmszMTJAIIjPzlBUkmxhaGDBwAAAS9seyQ==';
-  int uid = 0; // uid of the local user
-
-  late RtcEngine agoraEngine;
 
   late ScreenMirror screenMirror;
+  AdMob adMob = AdMob();
 
   @override
   initState() {
     // TODO: implement initState
     super.initState();
-    //create an instance of the Agora engine
   }
 
   @override
@@ -88,7 +83,10 @@ class _ConnectScreenState extends State<ConnectScreen> {
           ),
           Positioned(
             bottom: AppMargin.m20,
-            child: Container(),
+            child: SizedBox(
+              height: AppSize.s50,
+              child: AdWidget(ad: adMob.getBannerAd()),
+            ),
           ),
         ]),
       ),
@@ -137,8 +135,12 @@ class _ConnectScreenState extends State<ConnectScreen> {
                     ),
                     SizedBox(
                         width: AppSize.s200,
-                        child:
-                            GradientButton(buttonText: 'VIP', callback: () {}))
+                        child: GradientButton(
+                            buttonText: 'VIP',
+                            callback: () {
+                              Navigator.pushNamed(
+                                  context, Routes.paywallScreenRoute);
+                            }))
                   ]),
                 ),
               ),
@@ -167,10 +169,11 @@ class _ConnectScreenState extends State<ConnectScreen> {
   }
 
   stopMirroring() {
-    setState(() {
-      mirrored = false;
-    });
     try {
+      setState(() {
+        mirrored = false;
+      });
+      //leave channel once screen mirroring is no more needed
       screenMirror.leaveChannel();
     } catch (e) {
       showToast(e.toString());
@@ -181,9 +184,20 @@ class _ConnectScreenState extends State<ConnectScreen> {
     showDialog(context: context, builder: (builder) => const RateUsDialog());
   }
 
+  showRewardedAd() {
+    try {
+      adMob.showRewardedAd();
+    } catch (e) {
+      showToast(e.toString());
+    }
+  }
+
   scanCode() async {
     //This function performs all the necessary tasks prior to screen mirroring
     try {
+      //show the ad
+      showRewardedAd();
+
       //The QR code scanner opens and the result is stored in dynamic variable code
       final code =
           await Navigator.pushNamed(context, Routes.QRScannerScreenRoute);
@@ -191,15 +205,19 @@ class _ConnectScreenState extends State<ConnectScreen> {
       //If the code is not null then proceed next
       //The code can be null if user returns from screen without scanning the QR
       if (code != null) {
-        print('code is ${code}');
-
         //Store the QR value in channelName variable, the channel where receiver is present
-        channelName = code.toString();
+        String channelName = code.toString();
+
+        //initialize screen mirroring object and pass channel name
         screenMirror = ScreenMirror(channelName);
+
+        //screen mirroring starts
+        //if screen mirroring is successfull then true is returned
+        //if screen mirroring fails then false is returned
         bool result = await screenMirror.startMirroring();
 
         setState(() {
-          //set the mirrored variable to true to hide start button and show stop button
+          //set the mirrored variable to result fetched above
           mirrored = result;
         });
       }
