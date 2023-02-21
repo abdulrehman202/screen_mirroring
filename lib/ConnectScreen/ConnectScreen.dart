@@ -22,7 +22,8 @@ class ConnectScreen extends StatefulWidget {
   State<ConnectScreen> createState() => _ConnectScreenState();
 }
 
-class _ConnectScreenState extends State<ConnectScreen> {
+class _ConnectScreenState extends State<ConnectScreen>
+    with WidgetsBindingObserver {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool mirrored = false;
 
@@ -33,6 +34,25 @@ class _ConnectScreenState extends State<ConnectScreen> {
   initState() {
     // TODO: implement initState
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // TODO: implement didChangeAppLifecycleState
+    super.didChangeAppLifecycleState(state);
+
+    switch (state) {
+      case AppLifecycleState.detached:
+        stopMirroring();
+        break;
+
+      case AppLifecycleState.inactive:
+
+      case AppLifecycleState.resumed:
+
+      case AppLifecycleState.paused:
+    }
   }
 
   @override
