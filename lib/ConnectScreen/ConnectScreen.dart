@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -13,6 +15,7 @@ import 'package:screen_mirroring/resources/Components/StartMirroringButton.dart'
 import 'package:screen_mirroring/resources/Components/StopMirroringButton.dart';
 import 'package:screen_mirroring/resources/color_manager.dart';
 import 'package:screen_mirroring/resources/routes_manager.dart';
+import 'package:screen_mirroring/resources/strings_manager.dart';
 import 'package:screen_mirroring/resources/values_manager.dart';
 
 class ConnectScreen extends StatefulWidget {
@@ -29,6 +32,9 @@ class _ConnectScreenState extends State<ConnectScreen>
 
   late ScreenMirror screenMirror;
   AdMob adMob = AdMob();
+
+  final _timeoutDuration = const Duration(minutes: 7);
+  late Timer _timer;
 
   @override
   initState() {
@@ -53,6 +59,20 @@ class _ConnectScreenState extends State<ConnectScreen>
 
       case AppLifecycleState.paused:
     }
+  }
+
+  void onTimeout() {
+    //if the user is not subscribed then automatically stop mirroring
+    if (!AppStrings.isSubscribed) {
+      stopMirroring();
+      showToast('Please subscribe!');
+    }
+  }
+
+  void startTimer() {
+    setState(() {
+      _timer = Timer(_timeoutDuration, onTimeout);
+    });
   }
 
   @override
@@ -195,6 +215,11 @@ class _ConnectScreenState extends State<ConnectScreen>
       });
       //leave channel once screen mirroring is no more needed
       screenMirror.leaveChannel();
+
+      //if the timer is running stop it
+      if (_timer.isActive) {
+        _timer.cancel();
+      }
     } catch (e) {
       showToast(e.toString());
     }
@@ -240,6 +265,11 @@ class _ConnectScreenState extends State<ConnectScreen>
           //set the mirrored variable to result fetched above
           mirrored = result;
         });
+
+        //if the screen mirroring is started then start the timer
+        if (mirrored) {
+          startTimer();
+        }
       }
     } catch (e) {
       //In case any error occurs display it in Toast

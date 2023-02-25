@@ -1,6 +1,7 @@
 import 'package:adapty_flutter/adapty_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:screen_mirroring/Subscription/Services.dart';
 import 'package:screen_mirroring/resources/Components/SubscriptionRow.dart';
 import 'package:screen_mirroring/resources/color_manager.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -16,14 +17,12 @@ class PaywallScreen extends StatefulWidget {
 
 class _PaywallScreenState extends State<PaywallScreen> {
   int? selectedItem;
-  late Adapty adapty;
+  Services services = Services();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    adapty = Adapty();
-    adapty.activate();
   }
 
   @override
@@ -54,7 +53,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
       children: [
         const Text('Choose your plan'),
         FutureBuilder(
-            future: getAdaptyPaywallProducts(),
+            future: services.getAdaptyPaywallProducts(),
             builder: (BuildContext context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const CircularProgressIndicator();
@@ -70,8 +69,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
                               adaptyPaywalProductsList[index];
 
                           return GestureDetector(
-                            onTap: purchaseProduct(
-                                product), //() => adapty.makePurchase(product: product),
+                            onTap: services.purchaseProduct(product),
                             child: Padding(
                                 padding: const EdgeInsets.all(AppPadding.p8),
                                 child: SubscriptionRow(
@@ -88,39 +86,5 @@ class _PaywallScreenState extends State<PaywallScreen> {
             })
       ],
     );
-  }
-
-  Future<List<AdaptyPaywallProduct>> getAdaptyPaywallProducts() async {
-    try {
-      final myPaywall = await adapty.getPaywall(id: AppStrings.adaptyPaywallID);
-      final products = await adapty.getPaywallProducts(paywall: myPaywall);
-      return products;
-      // the requested products array
-    } on AdaptyError catch (adaptyError) {
-      rethrow;
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  purchaseProduct(_product) async {
-    try {
-      final profile = await adapty.makePurchase(product: _product);
-      if (profile?.accessLevels[AppStrings.weekly]?.isActive ?? false) {
-        // grant access to premium features
-        AppStrings.adaptySubscribedPackage = AppStrings.weekly;
-      } else if (profile?.accessLevels[AppStrings.monthly]?.isActive ?? false) {
-        // grant access to premium features
-        AppStrings.adaptySubscribedPackage = AppStrings.monthly;
-      } else if (profile?.accessLevels[AppStrings.quarterly]?.isActive ??
-          false) {
-        // grant access to premium features
-        AppStrings.adaptySubscribedPackage = AppStrings.quarterly;
-      }
-    } on AdaptyError catch (adaptyError) {
-      rethrow;
-    } catch (e) {
-      rethrow;
-    }
   }
 }
