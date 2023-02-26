@@ -15,7 +15,7 @@ class Services {
       return products;
       // the requested products array
     } on AdaptyError catch (adaptyError) {
-      rethrow;
+      throw adaptyError.message;
     } catch (e) {
       rethrow;
     }
@@ -24,23 +24,23 @@ class Services {
   purchaseProduct(_product) async {
     try {
       await adapty.makePurchase(product: _product);
-      updateSubscriptionStatus();
     } on AdaptyError catch (adaptyError) {
-      rethrow;
+      throw adaptyError.message;
     } catch (e) {
       rethrow;
     }
   }
 
-  updateSubscriptionStatus() async {
+  getSubscriptionStatus() async {
     try {
       final profile = await Adapty().getProfile();
-      AppStrings.isSubscribed =
-          (profile?.accessLevels[AppStrings.weekly]?.isActive ?? false) ||
-              (profile?.accessLevels[AppStrings.monthly]?.isActive ?? false) ||
-              (profile?.accessLevels[AppStrings.quarterly]?.isActive ?? false);
+      return (profile?.accessLevels[AppStrings.weekly]?.isActive ?? false) ||
+          (profile?.accessLevels[AppStrings.monthly]?.isActive ?? false) ||
+          (profile?.accessLevels[AppStrings.quarterly]?.isActive ?? false);
     } on AdaptyError catch (adaptyError) {
-      // handle the error
-    } catch (e) {}
+      throw adaptyError.message;
+    } catch (e) {
+      rethrow;
+    }
   }
 }

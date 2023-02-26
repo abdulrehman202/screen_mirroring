@@ -6,11 +6,7 @@ class AppStrings {
   static const String agoraAppID =
       '07abdf55ee2f47b2aac59b9afe4683c4'; //'eb89e77a6cae45a39d1c547598be879e';
 
-  static const String adaptyPaywallID = '<Paywall Id here>';
-  static bool isSubscribed = false;
-
-  static const String premium = 'premium';
-
+  static const String adaptyPaywallID = 'screen_mirroring_sub';
   static const String weekly = 'weekly';
   static const String monthly = 'monthly';
   static const String quarterly = 'quarterly';

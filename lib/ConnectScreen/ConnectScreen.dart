@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:screen_mirroring/AdMob/AdMob.dart';
 import 'package:screen_mirroring/ScreenMirror/ScreenMirror.dart';
+import 'package:screen_mirroring/Subscription/Services.dart';
 import 'package:screen_mirroring/resources/Clippers/Wavy.dart';
 import 'package:screen_mirroring/resources/Components/DrawerTile.dart';
 import 'package:screen_mirroring/resources/Components/GradientButton.dart';
@@ -32,6 +33,7 @@ class _ConnectScreenState extends State<ConnectScreen>
 
   late ScreenMirror screenMirror;
   AdMob adMob = AdMob();
+  Services services = Services();
 
   final _timeoutDuration = const Duration(minutes: 7);
   late Timer _timer;
@@ -63,7 +65,7 @@ class _ConnectScreenState extends State<ConnectScreen>
 
   void onTimeout() {
     //if the user is not subscribed then automatically stop mirroring
-    if (!AppStrings.isSubscribed) {
+    if (!services.getSubscriptionStatus()) {
       stopMirroring();
       showToast('Please subscribe!');
     }
